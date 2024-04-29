@@ -42,6 +42,7 @@ const initialTodosList = [
 class SimpleTodos extends Component {
   state = {
     todosList: initialTodosList,
+    inputValue: '',
   }
 
   deleteTodo = id => {
@@ -53,13 +54,37 @@ class SimpleTodos extends Component {
     })
   }
 
+  addingInput = event => {
+    this.setState({
+      inputValue: event.target.value,
+    })
+  }
+
+  addTodo = () => {
+    const {todosList, inputValue} = this.state
+    const newTodo = {
+      id: todosList.length + 1,
+      title: inputValue,
+    }
+    this.setState(prevState => ({
+      inputValue: '',
+      todosList: [...prevState.todosList, newTodo],
+    }))
+  }
+
   render() {
-    const {todosList} = this.state
+    const {todosList, inputValue} = this.state
 
     return (
       <div className="app-container">
         <div className="simple-todos-container">
           <h1 className="heading">Simple Todos</h1>
+          <div className="add-Cont">
+            <input type="text" value={inputValue} onChange={this.addingInput} />
+            <button type="button" onClick={this.addTodo} className="add-btn">
+              Add
+            </button>
+          </div>
           <ul className="todos-list">
             {todosList.map(eachTodo => (
               <TodoItem
@@ -76,13 +101,3 @@ class SimpleTodos extends Component {
 }
 
 export default SimpleTodos
-
-
-
-
-
-
-
-
-
-
